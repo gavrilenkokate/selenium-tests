@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.github.gavrilenkokate.basic.Constants.URL;
 import static com.github.gavrilenkokate.basic.XPaths.CHANGE_LANGUAGE_LINK;
+import static com.github.gavrilenkokate.basic.XPaths.MY_ACCOUNT_LINK;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -23,16 +24,16 @@ public class LanguageTest extends BasicChromeTest {
     private Object[][] navBarItems() {
         return new Object[][]{
                 // #1 - test case
-                {"it",       new String[]{"voli", "tours", "automobili", "offerte", "blog", "hotel"}},
+                {"it",       new String[]{"voli", "tours", "automobili", "offerte", "blog", "hotel"},"il mio account"},
                 // #2 - test case
-                {"fr",       new String[]{"des vols", "tours", "des voitures", "des offres", "blog", "hôtels"}}
+                {"fr",       new String[]{"des vols", "tours", "des voitures", "des offres", "blog", "hôtels"}, "mon compte"}
         };
     }
 
     @Test
     @Parameters(method = "navBarItems")
     @TestCaseName("[{index}] {method} lang: '{0}'")
-    public void testSelectLanguage(String langID, String[] expectedNavBarItems) {
+    public void testTranslateMainPageHeader(String langID, String[] expectedNavBarItems, String expectedAccountTitle) {
         //given
         driver().get(URL);
         WebElement changeLanguage = driver().findElement(By.xpath(CHANGE_LANGUAGE_LINK));
@@ -42,12 +43,14 @@ public class LanguageTest extends BasicChromeTest {
         clickJsVoid(driver().findElement(By.id(langID)));
 
         // then
+        String actualAccountTitle = driver().findElement(By.xpath(MY_ACCOUNT_LINK)).getText().trim().toLowerCase();
         WebElement navBarElem = driver().findElement(By.xpath("//div[contains(@class, 'navbar-collapse collapse')]/ul"));
         List<WebElement> elements = navBarElem.findElements(By.tagName("li"));
         int expectedNumOfElements = expectedNavBarItems.length;
         int actualNumOfElements = elements.size() - 1;
 
         assertEquals(expectedNumOfElements, actualNumOfElements);
+        assertEquals(expectedAccountTitle, actualAccountTitle);
 
         // skip first element with 0 index because it is not well formed
         elements = elements.subList(1, elements.size());
