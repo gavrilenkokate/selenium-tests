@@ -11,8 +11,8 @@ public final class Conf {
     private Conf() {
     }
 
-    private static String WEB_DRIVER_DIR = System.getProperty("user.dir") + "/web_driver";
-    private static String OS = System.getProperty("os.name").toLowerCase();
+    private static final String WEB_DRIVER_DIR = System.getProperty("user.dir") + "/web_driver";
+    private static final String OS = System.getProperty("os.name").toLowerCase();
 
     public static final WebDriver WEB_DRIVER = getWebDriver();
     public static final String PATH_TO_CHROME_EXECUTABLE = getPathToExecutable(WebDriver.CHROME);
