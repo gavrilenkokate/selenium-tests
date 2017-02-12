@@ -16,3 +16,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.0.1'
 }
+
+
+tasks.withType(Test) { systemProperty 'WEB_DRIVER', System.getProperty('WEB_DRIVER', 'chromedriver') }
+
+task testInFirefox(type: Test) {
+
+    systemProperties = [
+            WEB_DRIVER: System.getProperty('WEB_DRIVER', 'geckodriver')
+    ]
+}
